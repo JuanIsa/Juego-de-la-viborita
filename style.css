@@ -1,0 +1,44 @@
+
+*{
+    margin:0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body{
+    background-color:wheat;
+}
+main{
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+#canvas {
+    margin-top: 10px;
+    width: 70%;
+    border:3px solid black;
+}
+div{
+    height: 100px;
+    width: 100px;
+    background-color: brown;
+    text-align: center;
+    font-size: 3.5rem;
+}
+#boton{
+    font-size: 2rem;
+    border-radius: 20px;
+    margin-top:10px;
+    background-color: cadetblue;
+    width: fit-content;
+    padding: 10px;
+}
+#puntaje{
+    margin-top: 10px;
+    color: greenyellow;
+    width: 110px;
+    height: 70px;
+}
+h5{
+    font-size: 1.3rem;
+}
