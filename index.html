@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,10 +8,16 @@
   <title>Viborita</title>
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
   <main>
     <canvas id="canvas" width="1000" height="500"></canvas>
-    <div id="puntaje"></div>
+    <div id="puntaje">
+    </div>
+    <label for="dificultad">
+      Dificultad:
+      <input type="range" id="dificultad" name="dificultad" value="0" step="1" max="4">
+    </label>
     <button id="boton" onclick="play()">
       Play
     </button>
@@ -20,4 +27,5 @@
   </main>
   <script src="script.js"></script>
 </body>
+
 </html>

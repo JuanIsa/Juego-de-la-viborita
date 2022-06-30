@@ -1,16 +1,21 @@
 "use strict";
-document.body.addEventListener('contextmenu', (e) => {
-    e.preventDefault();
-});
+// document.body.addEventListener('contextmenu', (e) => {
+//     e.preventDefault();
+// });
 const contenedor = document.getElementById("canvas");
 const ctx = contenedor.getContext("2d");
 const caja = document.querySelectorAll("div");
 const boton = document.querySelector("#boton");
 const reset = document.querySelector("#reset");
+const hard = document.getElementById("dificultad");
+
 //tamaño de la víbora
-let tam = 25;
+let tam =10;
 //Sentido de movimiento inicial
 let direccion = 39;
+//Velocidad
+const speed=400;
+let velocidad = speed;
 //Tamaño inicial de la viborita
 let vibora = [[300, 100], [300 - tam, 100], [300 - tam * 2, 100]];
 //Dibujo la viborita en su posición inicila
@@ -18,14 +23,31 @@ ctx.fillStyle = "green";
 vibora.forEach((i) => {
     ctx.fillRect(i[0], i[1], tam, tam);
 });
-
-let puntaje = "0";
-
+let puntaje = 0;
 caja[0].innerHTML = puntaje;
-
 let random = cuadraditoAleatorio();
-
 let animacion;
+
+hard.addEventListener("change", () => {
+    let aux = hard.value;
+    if (aux == 0){
+        tam = 10;
+        reiniciar();
+    } else if (aux == 1) {
+        tam = 20;
+        reiniciar();
+    } else if (aux == 2) {
+        tam = 25;
+        reiniciar();
+    }
+    else if (aux == 3) {
+        tam = 50;
+        reiniciar();
+    } else {
+        tam = 100;
+        reiniciar();
+    }
+});
 
 function reiniciar() {
     vibora = [];
@@ -33,15 +55,16 @@ function reiniciar() {
     vibora = [[300, 100], [300 - tam, 100], [300 - tam * 2, 100]];
     direccion = 39;
     puntaje = "0";
+    velocidad = speed;
     caja[0].innerHTML = puntaje;
     random = cuadraditoAleatorio();
-    animacion = setInterval(dibujar, 150);
+    clearInterval(animacion);
+    animacion = setInterval(dibujar, velocidad);
     boton.innerHTML = "Pausa";
     boton.setAttribute("onClick", "pause()");
 }
-
 function play() {
-    animacion = setInterval(dibujar, 150);
+    animacion = setInterval(dibujar, velocidad);
     boton.setAttribute("onClick", "pause()");
     boton.innerHTML = "Pausa";
 }
@@ -50,7 +73,20 @@ function pause() {
     boton.setAttribute("onClick", "play()");
     boton.innerHTML = "Play";
 }
-
+let perdiste = () => {
+    alert("Perdiste");
+    boton.innerHTML = "Comenzar otro juego";
+    boton.setAttribute("onClick", "reiniciar()");
+    velocidad =speed;
+}
+function dificultad() {
+    velocidad -= 15;
+    if (velocidad < 50) {
+        velocidad = 50;
+    }
+    clearInterval(animacion);
+    play();
+}
 function dibujar() {
     //izquierda    
     if (direccion == 37) {
@@ -83,6 +119,7 @@ function dibujar() {
             puntaje++;
             caja[0].innerHTML = puntaje;
             random = cuadraditoAleatorio();
+            dificultad();
         }
         //Sino se pierde se ejecuta normalmente.
         if (bandera) {
@@ -90,10 +127,7 @@ function dibujar() {
             let fin = vibora.pop();
             ctx.clearRect(fin[0], fin[1], tam, tam);
         } else {
-            alert("Perdiste");
-            boton.innerHTML = "Comenzar otro juego";
-            boton.setAttribute("onClick", "reiniciar()");
-            bandera = true;
+            perdiste();
         }
     }
     //arriba
@@ -123,6 +157,7 @@ function dibujar() {
             puntaje++;
             caja[0].innerHTML = puntaje;
             random = cuadraditoAleatorio();
+            dificultad();
         }
         //Sino se pierde se ejecuta normalmente.
         if (bandera) {
@@ -130,10 +165,7 @@ function dibujar() {
             let fin = vibora.pop();
             ctx.clearRect(fin[0], fin[1], tam, tam);
         } else {
-            alert("Perdiste");
-            boton.innerHTML = "Comenzar otro juego";
-            boton.setAttribute("onClick", "reiniciar()");
-            bandera = true;
+            perdiste();
         }
     }
     //derecha
@@ -163,6 +195,7 @@ function dibujar() {
             puntaje++;
             caja[0].innerHTML = puntaje;
             random = cuadraditoAleatorio();
+            dificultad();
         }
         //Sino se pierde se ejecuta normalmente.
         if (bandera) {
@@ -170,10 +203,7 @@ function dibujar() {
             let fin = vibora.pop();
             ctx.clearRect(fin[0], fin[1], tam, tam);
         } else {
-            alert("Perdiste");
-            boton.innerHTML = "Comenzar otro juego";
-            boton.setAttribute("onClick", "reiniciar()");
-            bandera = true;
+            perdiste();
         }
     }
     //abajo
@@ -203,6 +233,7 @@ function dibujar() {
             puntaje++;
             caja[0].innerHTML = puntaje;
             random = cuadraditoAleatorio();
+            dificultad();
         }
         //Sino se pierde se ejecuta normalmente.
         if (bandera) {
@@ -210,39 +241,36 @@ function dibujar() {
             let fin = vibora.pop();
             ctx.clearRect(fin[0], fin[1], tam, tam);
         } else {
-            alert("Perdiste");
-            boton.innerHTML = "Comenzar otro juego";
-            boton.setAttribute("onClick", "reiniciar()");
-            bandera = true;
+            perdiste();
         }
     }
 }
-
-
-function cuadraditoAleatorio() {
+function numsRandom() {
     let aux = [];
+    aux[2] = false;
     aux[0] = Math.round(Math.random() * 1000 / tam) * tam;
     aux[1] = Math.round(Math.random() * 500 / tam) * tam;
-    //Reviso el número generado aleatoriamente no se encuentra dentro del vector de posición de la viborita, en el caso de estarlo le pido que vuelva a generar un número.
-    while (aux[0] >= 1000 || aux[1] >= 500) {
-        aux[0] = Math.round(Math.random() * 1000 / tam) * tam;
-        aux[1] = Math.round(Math.random() * 500 / tam) * tam;
-    }
+
     vibora.forEach((elemento) => {
-        while (elemento[0] == aux[0] && elemento[1] == aux[1]) {
-            aux[0] = Math.round(Math.random() * 1000 / tam) * tam;
-            aux[1] = Math.round(Math.random() * 500 / tam) * tam;
+        if ((elemento[0] == aux[0] && elemento[1] == aux[1]) ||
+            (aux[0] >= 1000 || aux[1] >= 500)) {
+            aux[2] = true;
+            console.log("Vivora");
         }
     });
+    return aux;
+}
+function cuadraditoAleatorio() {
+    let aux = numsRandom();
+    while (aux[2]) {
+        aux = numsRandom();
+    }
     ctx.fillStyle = "red";
     ctx.fillRect(aux[0], aux[1], tam, tam);
     ctx.fillStyle = "green";
     return aux;
 }
-
-
 document.onkeydown = pulsar;
-
 function pulsar(e) {
     if (e.keyCode === 37) {
         //izquierda
