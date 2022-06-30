@@ -1,7 +1,7 @@
 "use strict";
-// document.body.addEventListener('contextmenu', (e) => {
-//     e.preventDefault();
-// });
+document.body.addEventListener('contextmenu', (e) => {
+    e.preventDefault();
+});
 const contenedor = document.getElementById("canvas");
 const ctx = contenedor.getContext("2d");
 const caja = document.querySelectorAll("div");
@@ -48,7 +48,6 @@ hard.addEventListener("change", () => {
         reiniciar();
     }
 });
-
 function reiniciar() {
     vibora = [];
     ctx.clearRect(0, 0, 1000, 500);
