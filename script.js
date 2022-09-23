@@ -14,7 +14,7 @@ let tam =10;
 //Sentido de movimiento inicial
 let direccion = 39;
 //Velocidad
-const speed=400;
+const speed=150;
 let velocidad = speed;
 //Tamaño inicial de la viborita
 let vibora = [[300, 100], [300 - tam, 100], [300 - tam * 2, 100]];
@@ -80,8 +80,8 @@ let perdiste = () => {
 }
 function dificultad() {
     velocidad -= 15;
-    if (velocidad < 50) {
-        velocidad = 50;
+    if (velocidad < 75) {
+        velocidad = 75;
     }
     clearInterval(animacion);
     play();
@@ -273,15 +273,27 @@ document.onkeydown = pulsar;
 function pulsar(e) {
     if (e.keyCode === 37) {
         //izquierda
-        direccion = 37;
+        if (direccion == 39) {
+        } else {
+            direccion = 37;
+        }
     } else if (e.keyCode === 38) {
         //arriba
-        direccion = 38;
+        if (direccion == 40) {
+        } else {
+            direccion = 38;
+        }
     } else if (e.keyCode === 39) {
         //derecha
-        direccion = 39;
+        if (direccion == 37) {
+        } else {
+            direccion = 39;
+        }
     } else if (e.keyCode === 40) {
         //abajo
-        direccion = 40;
+        if (direccion == 38) {
+        } else {
+            direccion = 40;
+        }
     }
 }
